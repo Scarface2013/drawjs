@@ -1,0 +1,10 @@
+{
+   "compileOnSave": true,
+   "compilerOptions": {
+       "noImplicitAny" : true
+   },
+   "files": [
+     "client.ts",
+     "server.ts"
+   ]
+}

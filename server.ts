@@ -8,19 +8,16 @@ var opts = {
 };
 var app = require('express')();
 var https = require('https').createServer(opts,app);
-var io = require('socket.io')(https, {'transports': ['websocket', 'polling']});
+var server = require('socket.io')(https, {'transports': ['websocket', 'polling']});
 var redirApp = require('express')();
 var redirHttp = require('http').createServer(redirApp);
 var parser = require('body-parser');
 var Canvas = require('canvas');
-var canvas = new Canvas(1000,1000);
-var ctx = canvas.getContext('2d');
 
 // ********* SETUP *********
 https.listen(443, function(){
   console.log('Server started. Listening on port 443');
 });
-
 
 // Redirect all traffic to https
 redirHttp.listen(80);
@@ -30,14 +27,54 @@ redirApp.get('*',function(req,res){
 
 app.use(parser.json());
 
-function drawData(e){
+function drawData(ctx, e){
   ctx.beginPath();
   ctx.fillStyle = e.c;
   ctx.fillRect(e.x-e.s/2,e.y-e.s/2,e.s,e.s);
   ctx.closePath();
 }
 
-// ********** API CALLS ***************
+class Room {
+  canvas:HTMLCanvasElement;
+  name:string;
+  members:any[];
+  ctx:CanvasRenderingContext2D;
+
+  constructor(name:string, sizeX:number, sizeY:number){
+    this.name = name;
+    this.canvas = new Canvas(sizeX,sizeY);
+    this.ctx = this.canvas.getContext('2d');
+  }
+
+  addMember(client:Client):void{
+    
+  } 
+}
+
+class Client {
+  socket:any;
+  room:Room;
+
+  constructor(socket:any){
+    this.socket = socket;
+  }
+  
+  setRoom(room:Room):void {
+    this.room = room;
+  }
+
+  getRoom():Room {
+    return this.room;
+  }
+
+  getRoomName():string {
+    return this.room.name;
+  }
+}
+
+let room:Room = new Room("Root", 1000, 1000);
+
+// ********** ENDPOINTS ***************
 app.get('/',function(req,res){
   res.sendFile(__dirname+"/draw.html");
 });
@@ -46,23 +83,28 @@ app.get('/source',function(req,res){
   res.sendFile(__dirname+"/draw.js");
 });
 
+app.get('/client.js',function(req,res){
+  res.sendFile(__dirname+"/client.js");
+});
+
 // ********* Socket handlers **********
-io.on('connection', function(socket){
+server.on('connection', function(socket){
+  let client = new Client(socket);
+  console.log(socket);
   socket.on('draw', function(data){
-    console.log("Transmitting " + Object.keys(data).length + " bytes" );
     var data = JSON.parse(data);
     for(var key in data){
-      drawData(data[key]);
+      drawData(room.ctx, data[key]);
     }
-    io.emit('receive',JSON.stringify(data));
+    server.emit('receive',JSON.stringify(data));
   });
 
   socket.on('getCanvas',function(reason){
     console.log("Sending canvas");
     if(reason == "Load"){
-      socket.emit('setCanvas', canvas.toDataURL());
+      socket.emit('setCanvas', room.canvas.toDataURL());
     }else{
-      socket.emit('downloadCanvas', canvas.toDataURL());
+      socket.emit('downloadCanvas', room.canvas.toDataURL());
     }
   });
 });
