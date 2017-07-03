@@ -1,10 +1,11 @@
 {
    "compileOnSave": true,
    "compilerOptions": {
-       "noImplicitAny" : true
+       "rootDir" : "src",
+       "outDir" : "dist/js"
    },
    "files": [
-     "client.ts",
-     "server.ts"
+     "src/client.ts",
+     "src/server.ts"
    ]
 }

@@ -2,6 +2,7 @@
 
 // *********** OBJECT INITIALIZATION ************
 var fs = require('fs');
+var path = require('path');
 var opts = {
   key: fs.readFileSync("/home/master/certs/tfletch_tech.key"),
   cert: fs.readFileSync("/home/master/certs/tfletch_tech.crt")
@@ -74,17 +75,19 @@ class Client {
 
 let room:Room = new Room("Root", 1000, 1000);
 
+console.log(__dirname);
+
 // ********** ENDPOINTS ***************
 app.get('/',function(req,res){
-  res.sendFile(__dirname+"/draw.html");
+  res.sendFile(path.resolve(__dirname+"/../html/draw.html"));
 });
 
 app.get('/source',function(req,res){
-  res.sendFile(__dirname+"/draw.js");
+  res.sendFile(path.resolve(__dirname+"/../js/draw.js"));
 });
 
 app.get('/client.js',function(req,res){
-  res.sendFile(__dirname+"/client.js");
+  res.sendFile(path.resolve(__dirname+"/../js/client.js"));
 });
 
 // ********* Socket handlers **********
