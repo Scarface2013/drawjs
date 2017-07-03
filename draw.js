@@ -17,21 +17,20 @@ var canvas = new Canvas(1000,1000);
 var ctx = canvas.getContext('2d');
 
 // ********* SETUP *********
-https.listen(8080, function(){
-  console.log('Server started. Listening on port 8080');
+https.listen(443, function(){
+  console.log('Server started. Listening on port 443');
 });
 
 
-// Redirect all traffic to https@8080
+// Redirect all traffic to https
 redirHttp.listen(80);
 redirApp.get('*',function(req,res){
-  res.redirect('https://www.tfletch.tech:8080'+req.url);
+  res.redirect('https://www.tfletch.tech'+req.url);
 });
 
 app.use(parser.json());
 
 function drawData(e){
-  console.log(e);
   ctx.beginPath();
   ctx.fillStyle = e.c;
   ctx.fillRect(e.x-e.s/2,e.y-e.s/2,e.s,e.s);
@@ -49,7 +48,6 @@ app.get('/source',function(req,res){
 
 // ********* Socket handlers **********
 io.on('connection', function(socket){
-
   socket.on('draw', function(data){
     console.log("Transmitting " + Object.keys(data).length + " bytes" );
     var data = JSON.parse(data);
