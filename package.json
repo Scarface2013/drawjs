@@ -1,0 +1,31 @@
+{
+  "name": "collab-draw-js",
+  "version": "1.0.0",
+  "description": "Lets you draw with others from around the world!",
+  "main": "draw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scarface2013/drawjs.git"
+  },
+  "keywords": [
+    "draw",
+    "collaborate"
+  ],
+  "author": "Travis Fletcher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Scarface2013/drawjs/issues"
+  },
+  "homepage": "https://github.com/Scarface2013/drawjs#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "canvas": "^1.6.5",
+    "express": "^4.15.3",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "socket.io": "^2.0.3"
+  }
+}
