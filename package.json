@@ -4,7 +4,9 @@
   "description": "Lets you draw with others from around the world!",
   "main": "dist/js/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npm run build && pm2 restart server",
+    "build": "tsc && uglifyjs dist/js/client.js -c -m -o dist/js/client.min.js && uglifyjs dist/js/home.js -c -m -o dist/js/home.min.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "canvas": "^1.6.5",
+    "compression": "^1.6.2",
     "express": "^4.15.3",
     "http": "0.0.0",
     "https": "^1.0.0",
