@@ -6,6 +6,7 @@
    },
    "files": [
      "src/client.ts",
-     "src/server.ts"
+     "src/server.ts",
+     "src/home.ts"
    ]
 }

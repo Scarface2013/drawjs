@@ -1,0 +1,80 @@
+<HTML>
+  <HEAD>
+    <style>
+
+      button {
+        display: inline-block;
+      }
+
+      #title {
+      text-align: center;
+      }
+
+      .create-form {
+        display: none;
+      }
+
+      .join-form {
+        display: none;
+      }
+
+      #content {
+        text-align: center;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="dist/css/materialize.min.css" />
+  </HEAD>
+  <BODY>
+    <div class='row'>
+      <div class='col s12 teal darken-3 grey-text text-lighten-3'>
+        <H2 id='title'> DrawJS </H2>
+      </div>
+    </div>
+    <div id='content'>
+        <a class='btn join-button' href="#!">Join Room</a>
+        <a class='btn create-button' href="#">Create Room</a>
+
+
+        <div class='row join-form'>
+          <div class-'col s12'></br></div>
+          <form class='col s12' action='join' method='get'>
+            <div class='input-field inline col s2 offset-s5' >
+              <label for='join-name'>Room Name:</label>
+              <input id='join-name' name='name' type='text'>
+            </div>
+            <div class='col s2 offset-s5' >
+              <button type='submit' class='btn'>Submit <i class="material-icons right">send</i></button>
+            </div>
+          </div>
+        </form>
+
+
+        <div class='row create-form'>
+          <div class-'col s12'></br></div>
+          <form class='col s12' action='create' method='get'>
+            <div class='input-field inline col s2 offset-s5' >
+              <label for='create-name'>Room Name:</label>
+              <input  id='create-name' name='name' type='text'>
+            </div>
+            <div class='input-field inline col s1 offset-s5' >
+              <label for='create-height'>Height:</label>
+              <input  id='create-height' name='height' type='text'>
+            </div>
+            <div class='input-field inline col s1' >
+              <label for='create-width'>Width:</label>
+              <input  id='create-width' name='width' type='text'>
+            </div>
+            <div class='col s2 offset-s5' >
+              <button type='submit' class='btn'>Submit <i class="material-icons right">send</i></button>
+            </div>
+          </form>
+        </div>
+
+
+      </div>
+    <script src='dist/js/jquery.min.js'></script>
+    <script src='dist/js/materialize.min.js'></script>
+    <script src='dist/js/home.min.js'></script>
+  </BODY>
+</HTML>

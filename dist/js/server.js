@@ -2,9 +2,11 @@
 var fs = require('fs');
 var path = require('path');
 var opts = {
+    ca: fs.readFileSync("/home/master/certs/tfletch_tech.ca-bundle"),
     key: fs.readFileSync("/home/master/certs/tfletch_tech.key"),
     cert: fs.readFileSync("/home/master/certs/tfletch_tech.crt")
 };
+var compression = require('compression');
 var app = require('express')();
 var https = require('https').createServer(opts, app);
 var server = require('socket.io')(https, { 'transports': ['websocket', 'polling'] });
@@ -22,6 +24,7 @@ redirApp.get('*', function (req, res) {
     res.redirect('https://www.tfletch.tech' + req.url);
 });
 app.use(parser.json());
+app.use(compression());
 function drawData(ctx, e) {
     ctx.beginPath();
     ctx.fillStyle = e.c;
@@ -56,14 +59,20 @@ var Client = (function () {
 var room = new Room("Root", 1000, 1000);
 console.log(__dirname);
 // ********** ENDPOINTS ***************
-app.get('/', function (req, res) {
+app.get('/draw', function (req, res) {
     res.sendFile(path.resolve(__dirname + "/../html/draw.html"));
 });
 app.get('/source', function (req, res) {
-    res.sendFile(path.resolve(__dirname + "/../js/draw.js"));
+    res.sendFile(path.resolve(__dirname + "/../js/server.js"));
 });
-app.get('/client.js', function (req, res) {
-    res.sendFile(path.resolve(__dirname + "/../js/client.js"));
+app.get('/dist/:dir/:file', function (req, res) {
+    res.sendFile(path.resolve(__dirname + "/../" + req.params.dir + "/" + req.params.file));
+});
+app.get('/', function (req, res) {
+    res.sendFile(path.resolve(__dirname + "/../html/home.html"));
+});
+app.get('/join', function (req, res) {
+    res.sendFile(path.resolve(__dirname + "/../html/home.html"));
 });
 // ********* Socket handlers **********
 server.on('connection', function (socket) {
